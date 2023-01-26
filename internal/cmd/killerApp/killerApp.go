@@ -2,12 +2,11 @@ package killerApp
 
 import (
 	"fmt"
-	"os"
 	"mstarzec.pw/killer/internal/gameController"
 )
 
 func KillerRun() {
-	fmt.Println("starting", os.Getpid())
+	fmt.Println("Let's play")
 	game := gameController.New(10)
 	game.Run()
 }

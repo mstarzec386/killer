@@ -22,6 +22,21 @@ func (k *Killer) SetPosition(p position.Position) {
 	k.position = p
 }
 
+func (k *Killer) Hit() {
+	if k.health > 0 {
+	    k.health -= 1
+	}
+}
+
 func (k Killer) GetPosition() position.Position {
 	return k.position
+}
+
+
+func (k Killer) GetHealth() int {
+	return k.health
+}
+
+func (k Killer) IsAlive() bool {
+	return k.health > 0
 }

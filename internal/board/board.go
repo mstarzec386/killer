@@ -19,12 +19,12 @@ func (b *Board) PlaceKillers(number int) {
 
 		for !assigned {
 		  position := position.New(helpers.GetRandomInt(10), helpers.GetRandomInt(10))
-		  fmt.Println(position)
 
 		  if b.board[position.GetX()][position.GetY()] == nil {
 			k := killer.Killer{}
 			k.SetName(helpers.GenerateName(i))
 			k.SetPosition(position)
+			k.SetHealth(9)
 
 			b.board[position.GetX()][position.GetY()] = &k
 			b.killers = append(b.killers, &k)
@@ -32,13 +32,6 @@ func (b *Board) PlaceKillers(number int) {
 		  }
 		}
 	}
-
-	fmt.Println(b.board)
-	fmt.Println(b.killers)
-
-	fmt.Println(b.board)
-	fmt.Println(b.killers)
-	fmt.Println(*b.killers[0])
 }
 
 func (b *Board) MoveKiller(from position.Position, to position.Position) {
@@ -49,6 +42,26 @@ func (b *Board) MoveKiller(from position.Position, to position.Position) {
 	k.SetPosition(to)
 }
 
+func (b Board) GetPosition(p position.Position) *killer.Killer {
+	return b.board[p.GetX()][p.GetY()]
+}
+
 func (b Board) GetKillers() []*killer.Killer {
 	return b.killers
+}
+
+func (b Board) PrintBoard() {
+	fmt.Println(" ---------------------------------------")
+	for _, row := range b.board {
+			fmt.Printf("|")
+        for _, killer := range row {
+			if killer != nil {
+				fmt.Printf(" %d |", killer.GetHealth())
+			} else {
+				fmt.Printf(" - |")
+			}
+		}
+		fmt.Printf("\n")
+	}
+	fmt.Println(" ---------------------------------------")
 }
