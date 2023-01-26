@@ -19,6 +19,7 @@ type GameController struct {
 
 func (g GameController) Run() {
     g.board.PlaceKillers(g.playersNumber)
+    g.board.PrintBoard()
 
     endGame := false
 
@@ -41,14 +42,18 @@ func (g GameController) nextRound() bool{
             if len(opponents) > 0 {
                 weakest := findWeakestOpponent(opponents)
                 weakest.Hit()
+                if !weakest.IsAlive() {
+                    numberOfAlivedKillers -= 1
+                }
             } else {
                 moveToPosition := g.findNewPosition(currentKiller)
                 g.board.MoveKiller(killerPosition, *moveToPosition)
             }
         }
+
+        g.board.PrintBoard()
     } 
 
-    g.board.PrintBoard()
 
     return numberOfAlivedKillers < 2
 }

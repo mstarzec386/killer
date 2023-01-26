@@ -35,6 +35,8 @@ func (b *Board) PlaceKillers(number int) {
 }
 
 func (b *Board) MoveKiller(from position.Position, to position.Position) {
+	fmt.Println("move from", from.GetX(), from.GetY())
+	fmt.Println("move to", to.GetX(), to.GetY())
 	k := b.board[from.GetX()][from.GetY()] 
 
 	b.board[from.GetX()][from.GetY()] = nil
