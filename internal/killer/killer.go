@@ -1,13 +1,15 @@
 package killer
 
 import (
+	"fmt"
+
 	"mstarzec.pw/killer/internal/position"
 )
 
 type Killer struct {
 	name string
 	health int
-	position position.Position
+	position *position.Position
 }
 
 func (k *Killer) SetName(name string) {
@@ -19,7 +21,8 @@ func (k *Killer) SetHealth(n int) {
 }
 
 func (k *Killer) SetPosition(p position.Position) {
-	k.position = p
+	k.position = &p
+	fmt.Printf("(%d %d) -> (%d %d)\n",p.GetX(), p.GetY(), k.position.GetX(), k.position.GetY())
 }
 
 func (k *Killer) Hit() {
@@ -29,7 +32,7 @@ func (k *Killer) Hit() {
 }
 
 func (k Killer) GetPosition() position.Position {
-	return k.position
+	return *k.position
 }
 
 
@@ -39,4 +42,8 @@ func (k Killer) GetHealth() int {
 
 func (k Killer) IsAlive() bool {
 	return k.health > 0
+}
+
+func (k Killer) ToString() string {
+	return fmt.Sprintf("%s - %d (%d, %d)", k.name, k.health, k.position.GetX(), k.position.GetY())
 }

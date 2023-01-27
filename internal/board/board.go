@@ -2,6 +2,7 @@ package board
 
 import (
 	"fmt"
+	"time"
 
 	"mstarzec.pw/killer/internal/position"
 	"mstarzec.pw/killer/internal/helpers"
@@ -34,17 +35,27 @@ func (b *Board) PlaceKillers(number int) {
 	}
 }
 
-func (b *Board) MoveKiller(from position.Position, to position.Position) {
+func (b *Board) MoveKiller(killer *killer.Killer, to position.Position) {
+	from := killer.GetPosition()
+
 	fmt.Println("move from", from.GetX(), from.GetY())
 	fmt.Println("move to", to.GetX(), to.GetY())
-	k := b.board[from.GetX()][from.GetY()] 
 
+	killer.SetPosition(to)
+
+	b.board[to.GetX()][to.GetY()] = killer
 	b.board[from.GetX()][from.GetY()] = nil
-	b.board[to.GetX()][to.GetY()] = k
-	k.SetPosition(to)
+
+	b.PrintBoard()
 }
 
-func (b Board) GetPosition(p position.Position) *killer.Killer {
+func (b Board) GetPosition(p *position.Position) *killer.Killer {
+	fmt.Printf("get position (%d, %d) -> ", p.GetX(), p.GetY())
+	k := b.board[p.GetX()][p.GetY()]
+	if (k != nil) {
+		fmt.Printf("(%d, %d)", k.GetPosition().GetX(), k.GetPosition().GetY())
+	}
+	fmt.Println(".")
 	return b.board[p.GetX()][p.GetY()]
 }
 
@@ -66,4 +77,5 @@ func (b Board) PrintBoard() {
 		fmt.Printf("\n")
 	}
 	fmt.Println(" ---------------------------------------")
+	time.Sleep(50 * time.Millisecond)
 }

@@ -34,10 +34,13 @@ func (g GameController) nextRound() bool{
     numberOfAlivedKillers := 0
 
     for _, currentKiller := range killers {
+        g.board.PrintBoard()
+
         if currentKiller.IsAlive() {
             numberOfAlivedKillers += 1
             killerPosition := currentKiller.GetPosition()
 
+            fmt.Println("current", currentKiller.ToString())
             opponents := g.findOpponents(killerPosition)
             if len(opponents) > 0 {
                 weakest := findWeakestOpponent(opponents)
@@ -47,7 +50,9 @@ func (g GameController) nextRound() bool{
                 }
             } else {
                 moveToPosition := g.findNewPosition(currentKiller)
-                g.board.MoveKiller(killerPosition, *moveToPosition)
+                fmt.Printf("MOVE kurwa (%d %d) -> (%d %d) :: ", currentKiller.GetPosition().GetX(), currentKiller.GetPosition().GetY(), moveToPosition.GetX(), moveToPosition.GetY())
+                g.board.MoveKiller(currentKiller, *moveToPosition)
+                fmt.Printf("MOVE kurwa to samo powinno byc (%d %d) -> (%d %d)\n", currentKiller.GetPosition().GetX(), currentKiller.GetPosition().GetY(), moveToPosition.GetX(), moveToPosition.GetY())
             }
         }
 
@@ -64,8 +69,14 @@ func (g GameController) findOpponents(p position.Position) []*killer.Killer {
 
     for _, possition := range nearPossitions {
         if possition.GetX() < MaxSize && possition.GetY() < MaxSize {
-            opponent := g.board.GetPosition(*possition)
+            opponent := g.board.GetPosition(possition)
+            
+            if opponent != nil && opponent.IsAlive() && (opponent.GetPosition().GetX() != possition.GetX() || opponent.GetPosition().GetY() != possition.GetY()) {
+                fmt.Printf("KURWA NO POJEBANE %v %v", opponent.GetPosition(), possition);
+            }
+
             if opponent != nil && opponent.IsAlive() {
+                fmt.Printf("opponent (%s) (%d %d)\n", opponent.ToString(), possition.GetX(), possition.GetY())
                 opponents = append(opponents, opponent)
             }
         }
@@ -82,9 +93,10 @@ func (g GameController) findNewPosition(k *killer.Killer) *position.Position {
     possiblePossitions := currentKillerPosition.GetNearPositions()
     found := false
 
+    //  TODO possible endless for
     for !found && len(possiblePossitions) > 0 {
         randomPossiblePosition := possiblePossitions[helpers.GetRandomInt(len(possiblePossitions))]
-        if randomPossiblePosition.GetX() < 10 && randomPossiblePosition.GetY() < 10 && g.board.GetPosition(*randomPossiblePosition) == nil {
+        if randomPossiblePosition.GetX() < 10 && randomPossiblePosition.GetY() < 10 && g.board.GetPosition(randomPossiblePosition) == nil {
             found = true
             x = randomPossiblePosition.GetX()
             y = randomPossiblePosition.GetY()
