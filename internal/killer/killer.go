@@ -22,7 +22,6 @@ func (k *Killer) SetHealth(n int) {
 
 func (k *Killer) SetPosition(p position.Position) {
 	k.position = &p
-	fmt.Printf("(%d %d) -> (%d %d)\n",p.GetX(), p.GetY(), k.position.GetX(), k.position.GetY())
 }
 
 func (k *Killer) Hit() {

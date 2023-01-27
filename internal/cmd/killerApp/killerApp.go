@@ -7,6 +7,6 @@ import (
 
 func KillerRun() {
 	fmt.Println("Let's play")
-	game := gameController.New(2)
+	game := gameController.New(10)
 	game.Run()
 }

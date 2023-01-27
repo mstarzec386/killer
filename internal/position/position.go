@@ -1,7 +1,5 @@
 package position
 
-import "fmt"
-
 type Position struct{
 	x int
 	y int
@@ -20,7 +18,6 @@ func (p Position) GetNearPositions() []*Position {
 
 	x := p.x
 	y := p.y
-	fmt.Println("current position", x, y)
 
 	possitions = append(possitions, &Position{x: x + 0, y: y + 1})
 	possitions = append(possitions, &Position{x: x + 1, y: y})
@@ -40,10 +37,6 @@ func (p Position) GetNearPositions() []*Position {
 		possitions = append(possitions, &Position{x: x - 1, y: y - 1})
 	} 	
 
-	for _, p := range possitions {
-		fmt.Printf("(%d %d) ", p.GetX(), p.GetY())
-	}
-	fmt.Println(".")
 	return possitions
 }
 

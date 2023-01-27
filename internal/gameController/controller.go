@@ -18,6 +18,7 @@ type GameController struct {
 
 
 func (g GameController) Run() {
+    g.board.InitBoard()
     g.board.PlaceKillers(g.playersNumber)
     g.board.PrintBoard()
 
@@ -40,19 +41,13 @@ func (g GameController) nextRound() bool{
             numberOfAlivedKillers += 1
             killerPosition := currentKiller.GetPosition()
 
-            fmt.Println("current", currentKiller.ToString())
             opponents := g.findOpponents(killerPosition)
             if len(opponents) > 0 {
                 weakest := findWeakestOpponent(opponents)
                 weakest.Hit()
-                if !weakest.IsAlive() {
-                    numberOfAlivedKillers -= 1
-                }
             } else {
                 moveToPosition := g.findNewPosition(currentKiller)
-                fmt.Printf("MOVE kurwa (%d %d) -> (%d %d) :: ", currentKiller.GetPosition().GetX(), currentKiller.GetPosition().GetY(), moveToPosition.GetX(), moveToPosition.GetY())
                 g.board.MoveKiller(currentKiller, *moveToPosition)
-                fmt.Printf("MOVE kurwa to samo powinno byc (%d %d) -> (%d %d)\n", currentKiller.GetPosition().GetX(), currentKiller.GetPosition().GetY(), moveToPosition.GetX(), moveToPosition.GetY())
             }
         }
 
@@ -71,12 +66,7 @@ func (g GameController) findOpponents(p position.Position) []*killer.Killer {
         if possition.GetX() < MaxSize && possition.GetY() < MaxSize {
             opponent := g.board.GetPosition(possition)
             
-            if opponent != nil && opponent.IsAlive() && (opponent.GetPosition().GetX() != possition.GetX() || opponent.GetPosition().GetY() != possition.GetY()) {
-                fmt.Printf("KURWA NO POJEBANE %v %v", opponent.GetPosition(), possition);
-            }
-
             if opponent != nil && opponent.IsAlive() {
-                fmt.Printf("opponent (%s) (%d %d)\n", opponent.ToString(), possition.GetX(), possition.GetY())
                 opponents = append(opponents, opponent)
             }
         }

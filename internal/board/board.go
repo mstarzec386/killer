@@ -10,8 +10,15 @@ import (
 )
 
 type Board struct {
-    board [10][10]*killer.Killer
+    board [][]*killer.Killer
 	killers []*killer.Killer
+}
+
+func (b *Board) InitBoard() {
+	b.board = make([][]*killer.Killer, 10)
+	for i:= range b.board {
+		b.board[i] = make([]*killer.Killer, 10)
+	}
 }
 
 func (b *Board) PlaceKillers(number int) {
@@ -37,10 +44,6 @@ func (b *Board) PlaceKillers(number int) {
 
 func (b *Board) MoveKiller(killer *killer.Killer, to position.Position) {
 	from := killer.GetPosition()
-
-	fmt.Println("move from", from.GetX(), from.GetY())
-	fmt.Println("move to", to.GetX(), to.GetY())
-
 	killer.SetPosition(to)
 
 	b.board[to.GetX()][to.GetY()] = killer
@@ -50,12 +53,6 @@ func (b *Board) MoveKiller(killer *killer.Killer, to position.Position) {
 }
 
 func (b Board) GetPosition(p *position.Position) *killer.Killer {
-	fmt.Printf("get position (%d, %d) -> ", p.GetX(), p.GetY())
-	k := b.board[p.GetX()][p.GetY()]
-	if (k != nil) {
-		fmt.Printf("(%d, %d)", k.GetPosition().GetX(), k.GetPosition().GetY())
-	}
-	fmt.Println(".")
 	return b.board[p.GetX()][p.GetY()]
 }
 
@@ -77,5 +74,5 @@ func (b Board) PrintBoard() {
 		fmt.Printf("\n")
 	}
 	fmt.Println(" ---------------------------------------")
-	time.Sleep(50 * time.Millisecond)
+	time.Sleep(5 * time.Millisecond)
 }
