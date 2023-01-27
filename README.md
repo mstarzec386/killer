@@ -1,2 +1,7 @@
 # killer
-kill
+kill app
+
+```
+cd cmd/killer
+go run .
+```
